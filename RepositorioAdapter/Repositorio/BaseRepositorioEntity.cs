@@ -1,53 +1,128 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Linq.Expressions;
 using RepositorioAdapter.Adapter;
 
 namespace RepositorioAdapter.Repositorio
 {
-    public class BaseRepositorioEntity<TEntity, TModel, TAdapter> : IRepositorio<TEntity, TModel, TAdapter>
-        where TAdapter : IAdapter<TEntity, TModel>, new()
-        where TEntity : class
+    public class BaseRepositorioEntity<TModel, TViewModel, TAdapter> : IRepositorio<TModel, TViewModel, TAdapter>
+        where TAdapter : IAdapter<TModel, TViewModel>, new()
         where TModel : class
+        where TViewModel : class
     {
-        public ICollection<TModel> Get()
+        protected DbContext Context;
+
+        protected DbSet<TModel> DbSet
         {
-            throw new NotImplementedException();
+            get { return Context.Set<TModel>(); }
         }
 
-        public TModel Get(params object[] keys)
+        public TAdapter Adapter
         {
-            throw new NotImplementedException();
+            get
+            {
+                if (_adapter == null)
+                    _adapter = new TAdapter();
+                return _adapter;
+            }
         }
 
-        public ICollection<TModel> Get(Expression<Func<TModel, bool>> @where)
+        private TAdapter _adapter;
+
+
+        public BaseRepositorioEntity(DbContext context)
         {
-            throw new NotImplementedException();
+            Context = context;
         }
 
-        public TModel Add(TModel model)
+        public ICollection<TViewModel> Get()
         {
-            throw new NotImplementedException();
+            return Adapter.FromModel(DbSet.ToList());
         }
 
-        public int Update(TModel model)
+        public TViewModel Get(params object[] keys)
         {
-            throw new NotImplementedException();
+            var data = DbSet.Find(keys);
+            return Adapter.FromModel(data);
         }
 
-        public int Delete(TModel model)
+        public ICollection<TViewModel> Get(Expression<Func<TModel, bool>> @where)
         {
-            throw new NotImplementedException();
+            var data = DbSet.Where(where);
+            return Adapter.FromModel(data.ToList());
+        }
+
+        public TViewModel Add(TViewModel model)
+        {
+            var guardado = Adapter.FromViewModel(model);
+            DbSet.Add(guardado);
+            try
+            {
+                Context.SaveChanges();
+                return Adapter.FromModel(guardado);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public int Update(TViewModel model)
+        {
+            var guardar = Adapter.FromViewModel(model);
+            Context.Entry(guardar).State = EntityState.Modified;
+            try
+            {
+                return Context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
+        public int Delete(TViewModel model)
+        {
+            var data = Adapter.FromViewModel(model);
+            Context.Entry(data).State = EntityState.Deleted;
+            try
+            {
+                return Context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
         }
 
         public int Delete(params object[] keys)
         {
-            throw new NotImplementedException();
+            var data = DbSet.Find(keys);
+            DbSet.Remove(data);
+            try
+            {
+                return Context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
         }
 
-        public int Delete(Expression<Func<TModel, bool>> @where)
+        public int Delete(Expression<Func<TModel, bool>> where)
         {
-            throw new NotImplementedException();
+            var data = DbSet.Where(where);
+            DbSet.RemoveRange(data);
+            try
+            {
+                return Context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
         }
     }
 }
