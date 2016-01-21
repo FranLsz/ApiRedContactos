@@ -37,24 +37,24 @@ namespace RepositorioAdapter.Repositorio
             Context = context;
         }
 
-        public ICollection<TViewModel> Get()
+        public virtual ICollection<TViewModel> Get()
         {
             return Adapter.FromModel(DbSet.ToList());
         }
 
-        public TViewModel Get(params object[] keys)
+        public virtual TViewModel Get(params object[] keys)
         {
             var data = DbSet.Find(keys);
             return Adapter.FromModel(data);
         }
 
-        public ICollection<TViewModel> Get(Expression<Func<TModel, bool>> @where)
+        public virtual ICollection<TViewModel> Get(Expression<Func<TModel, bool>> @where)
         {
             var data = DbSet.Where(where);
             return Adapter.FromModel(data.ToList());
         }
 
-        public TViewModel Add(TViewModel model)
+        public virtual TViewModel Add(TViewModel model)
         {
             var guardado = Adapter.FromViewModel(model);
             DbSet.Add(guardado);
@@ -69,7 +69,7 @@ namespace RepositorioAdapter.Repositorio
             }
         }
 
-        public int Update(TViewModel model)
+        public virtual int Update(TViewModel model)
         {
             var guardar = Adapter.FromViewModel(model);
             Context.Entry(guardar).State = EntityState.Modified;
@@ -83,7 +83,7 @@ namespace RepositorioAdapter.Repositorio
             }
         }
 
-        public int Delete(TViewModel model)
+        public virtual int Delete(TViewModel model)
         {
             var data = Adapter.FromViewModel(model);
             Context.Entry(data).State = EntityState.Deleted;
@@ -97,7 +97,7 @@ namespace RepositorioAdapter.Repositorio
             }
         }
 
-        public int Delete(params object[] keys)
+        public virtual int Delete(params object[] keys)
         {
             var data = DbSet.Find(keys);
             DbSet.Remove(data);
@@ -111,7 +111,7 @@ namespace RepositorioAdapter.Repositorio
             }
         }
 
-        public int Delete(Expression<Func<TModel, bool>> where)
+        public virtual int Delete(Expression<Func<TModel, bool>> where)
         {
             var data = DbSet.Where(where);
             DbSet.RemoveRange(data);

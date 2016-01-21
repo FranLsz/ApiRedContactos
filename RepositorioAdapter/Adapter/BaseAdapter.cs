@@ -3,18 +3,18 @@ using System.Linq;
 
 namespace RepositorioAdapter.Adapter
 {
-    public abstract class BaseAdapter<TEntity, TModel> : IAdapter<TEntity, TModel>
+    public abstract class BaseAdapter<TModel, TViewModel> : IAdapter<TModel, TViewModel>
     {
-        public abstract TEntity FromViewModel(TModel model);
+        public abstract TModel FromViewModel(TViewModel model);
 
-        public abstract TModel FromModel(TEntity model);
+        public abstract TViewModel FromModel(TModel model);
 
-        public ICollection<TEntity> FromViewModel(ICollection<TModel> model)
+        public ICollection<TModel> FromViewModel(ICollection<TViewModel> model)
         {
             return model.Select(FromViewModel).ToList();
         }
 
-        public ICollection<TModel> FromModel(ICollection<TEntity> model)
+        public ICollection<TViewModel> FromModel(ICollection<TModel> model)
         {
             return model.Select(FromModel).ToList();
         }

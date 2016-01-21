@@ -8,13 +8,13 @@ namespace RepositorioAdapter.Adapter
     /// <summary>
     /// Transforma TEntity a TModel y viceversa
     /// </summary>
-    /// <typeparam name="TEntity"> Objeto entidad de la base de datos </typeparam>
-    /// <typeparam name="TModel"> Objeto de transferencia, es lo que mando </typeparam>
-    public interface IAdapter<TEntity, TModel>
+    /// <typeparam name="TModel"> Objeto entidad de la base de datos </typeparam>
+    /// <typeparam name="TViewModel"> Objeto de transferencia, es lo que mando </typeparam>
+    public interface IAdapter<TModel, TViewModel>
     {
-        TEntity FromViewModel(TModel model);
-        TModel FromModel(TEntity model);
-        ICollection<TEntity> FromViewModel(ICollection<TModel> model);
-        ICollection<TModel> FromModel(ICollection<TEntity> model);
+        TModel FromViewModel(TViewModel model);
+        TViewModel FromModel(TModel model);
+        ICollection<TModel> FromViewModel(ICollection<TViewModel> model);
+        ICollection<TViewModel> FromModel(ICollection<TModel> model);
     }
 }
