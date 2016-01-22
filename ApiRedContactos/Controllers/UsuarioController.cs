@@ -5,8 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using ApiRedContactos.Repositorios;
-using ContactosModel.Models;
+using ApiRedContactos.Repository;
+using DataModel.ViewModel;
 using Microsoft.Practices.Unity;
 
 namespace ApiRedContactos.Controllers
@@ -14,9 +14,9 @@ namespace ApiRedContactos.Controllers
     public class UsuarioController : ApiController
     {
         [Dependency]
-        public UsuarioRepositorio UsuarioRepositorio { get; set; }
+        public UsuarioRepository UsuarioRepositorio { get; set; }
 
-        [ResponseType(typeof(UsuarioViewModel))]
+        [ResponseType(typeof(UsuarioModel))]
         public IHttpActionResult GetValido(string username, string password)
         {
             var data = UsuarioRepositorio.Validar(username, password);
@@ -26,7 +26,7 @@ namespace ApiRedContactos.Controllers
             return Ok(data);
         }
 
-        [ResponseType(typeof(UsuarioViewModel))]
+        [ResponseType(typeof(UsuarioModel))]
         public IHttpActionResult GetUnico(string username)
         {
             var data = UsuarioRepositorio.IsUnico(username);
@@ -34,8 +34,8 @@ namespace ApiRedContactos.Controllers
             return Ok(data);
         }
 
-        [ResponseType(typeof(UsuarioViewModel))]
-        public IHttpActionResult Post(UsuarioViewModel model)
+        [ResponseType(typeof(UsuarioModel))]
+        public IHttpActionResult Post(UsuarioModel model)
         {
             var data = UsuarioRepositorio.Add(model);
 
@@ -46,7 +46,7 @@ namespace ApiRedContactos.Controllers
         }
 
         [ResponseType(typeof(void))]
-        public IHttpActionResult Put(int id, UsuarioViewModel model)
+        public IHttpActionResult Put(int id, UsuarioModel model)
         {
             var d = UsuarioRepositorio.Get(id);
             if (d == null || d.Id != model.Id)

@@ -1,8 +1,8 @@
 using System.Data.Entity;
 using Microsoft.Practices.Unity;
 using System.Web.Http;
-using ApiRedContactos.Models;
-using ApiRedContactos.Repositorios;
+using ApiRedContactos.Repository;
+using Repository.Model;
 using Unity.WebApi;
 
 namespace ApiRedContactos
@@ -20,7 +20,7 @@ namespace ApiRedContactos
 
 
             container.RegisterType<DbContext, RedContactos15Entities>();
-            container.RegisterType<UsuarioRepositorio>();
+            container.RegisterType<UsuarioRepository>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
