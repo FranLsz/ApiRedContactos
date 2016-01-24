@@ -17,6 +17,16 @@ namespace ApiRedContactos.Controllers
         public UsuarioRepository UsuarioRepositorio { get; set; }
 
         [ResponseType(typeof(UsuarioModel))]
+        public IHttpActionResult Get()
+        {
+            var data = UsuarioRepositorio.Get();
+
+            if (data == null)
+                return NotFound();
+            return Ok(data);
+        }
+
+        [ResponseType(typeof(UsuarioModel))]
         public IHttpActionResult GetValido(string username, string password)
         {
             var data = UsuarioRepositorio.Validar(username, password);
