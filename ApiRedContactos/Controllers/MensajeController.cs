@@ -11,53 +11,55 @@ using Microsoft.Practices.Unity;
 
 namespace ApiRedContactos.Controllers
 {
-    public class UsuarioController : ApiController
+    public class MensajeController : ApiController
     {
         [Dependency]
-        public UsuarioRepository UsuarioRepositorio { get; set; }
+        public MensajeRepository MensajeRepository { get; set; }
 
-        [ResponseType(typeof(UsuarioModel))]
+        [ResponseType(typeof(MensajeModel))]
         public IHttpActionResult Get()
         {
-            var data = UsuarioRepositorio.Get();
+            var data = MensajeRepository.Get();
 
             if (data == null)
                 return NotFound();
             return Ok(data);
         }
 
-        [ResponseType(typeof(UsuarioModel))]
+        [ResponseType(typeof(MensajeModel))]
         public IHttpActionResult Get(int id)
         {
-            var data = UsuarioRepositorio.Get(id);
+            var data = MensajeRepository.Get(id);
 
             if (data == null)
                 return NotFound();
             return Ok(data);
         }
 
-        [ResponseType(typeof(UsuarioModel))]
-        public IHttpActionResult GetValido(string username, string password)
+        [ResponseType(typeof(MensajeModel))]
+        public IHttpActionResult GetByReceptor(int receptorId)
         {
-            var data = UsuarioRepositorio.Validar(username, password);
+            var data = MensajeRepository.Get(o => o.IdDestino == receptorId);
 
             if (data == null)
                 return NotFound();
             return Ok(data);
         }
 
-        [ResponseType(typeof(UsuarioModel))]
-        public IHttpActionResult GetUnico(string username)
+        [ResponseType(typeof(MensajeModel))]
+        public IHttpActionResult GetByEmisor(int emisorId)
         {
-            var data = UsuarioRepositorio.IsUnico(username);
+            var data = MensajeRepository.Get(o => o.IdOrigen == emisorId);
 
+            if (data == null)
+                return NotFound();
             return Ok(data);
         }
 
-        [ResponseType(typeof(UsuarioModel))]
-        public IHttpActionResult Post(UsuarioModel model)
+        [ResponseType(typeof(MensajeModel))]
+        public IHttpActionResult Post(MensajeModel model)
         {
-            var data = UsuarioRepositorio.Add(model);
+            var data = MensajeRepository.Add(model);
 
             if (data == null)
                 return BadRequest();
@@ -66,14 +68,14 @@ namespace ApiRedContactos.Controllers
         }
 
         [ResponseType(typeof(void))]
-        public IHttpActionResult Put(int id, UsuarioModel model)
+        public IHttpActionResult Put(int id, MensajeModel model)
         {
-            var d = UsuarioRepositorio.Get(id);
+            var d = MensajeRepository.Get(id);
             if (d == null || d.Id != model.Id)
                 return NotFound();
 
 
-            var data = UsuarioRepositorio.Update(model);
+            var data = MensajeRepository.Update(model);
 
             if (data < 1)
                 return BadRequest();
@@ -84,13 +86,12 @@ namespace ApiRedContactos.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult Delete(int id)
         {
-            var data = UsuarioRepositorio.Delete(id);
+            var data = MensajeRepository.Delete(id);
 
             if (data < 1)
                 return BadRequest();
 
             return Ok();
         }
-
     }
 }

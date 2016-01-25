@@ -59,7 +59,7 @@ namespace Repository.Repository
         public virtual TModel Add(TModel model)
         {
             var data = Adapter.FromViewModel(model);
-            DbSet.Add(data);
+            data = DbSet.Add(data);
             try
             {
                 Context.SaveChanges();

@@ -21,6 +21,8 @@ namespace ApiRedContactos
 
             container.RegisterType<DbContext, RedContactos15Entities>();
             container.RegisterType<UsuarioRepository>();
+            container.RegisterType<ContactoRepository>();
+            container.RegisterType<MensajeRepository>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
