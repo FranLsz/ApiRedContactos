@@ -16,16 +16,17 @@ namespace ApiRedContactos.Controllers
         [Dependency]
         public UsuarioRepository UsuarioRepositorio { get; set; }
         [Dependency]
-        public UsuarioRepository ContactoRepositorio { get; set; }
+        public ContactoRepository ContactoRepositorio { get; set; }
 
         [ResponseType(typeof(UsuarioModel))]
         public IHttpActionResult Get(int id)
         {
-            var data = UsuarioRepositorio.Get();
+            var data = ContactoRepositorio.Get(o => o.IdUsuario == id);
+            var contactos = data.Select(c => UsuarioRepositorio.Get(c.IdAmigo)).ToList();
 
             if (data == null)
                 return NotFound();
-            return Ok(data);
+            return Ok(contactos);
         }
     }
 }
