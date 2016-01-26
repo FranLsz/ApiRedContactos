@@ -56,7 +56,9 @@
     <Compile Include="Adapter\IAdapter.cs" />
     <Compile Include="Adapter\MensajeAdapter.cs" />
     <Compile Include="Adapter\UsuarioAdapter.cs" />
-    <Compile Include="Model\Contacto.cs" />
+    <Compile Include="Model\Contacto.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Mensaje.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

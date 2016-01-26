@@ -132,6 +132,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\ApiRedContactos15 %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ApiRedContactos15 %284%29.pubxml" />
     <None Include="Properties\PublishProfiles\ApiRedContactos15 - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\ApiRedContactos15 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\ApiRedContactos15.pubxml" />

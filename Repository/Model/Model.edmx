@@ -12,6 +12,7 @@
           </Key>
           <Property Name="idUsuario" Type="int" Nullable="false" />
           <Property Name="idAmigo" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Mensaje">
           <Key>
@@ -110,6 +111,17 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RedContactos15Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Contacto">
+          <Key>
+            <PropertyRef Name="idUsuario" />
+            <PropertyRef Name="idAmigo" />
+          </Key>
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="idAmigo" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Contacto_Usuario3" FromRole="Contacto" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Contacto_Usuario4" FromRole="Contacto" ToRole="Usuario" />
+        </EntityType>
         <EntityType Name="Mensaje">
           <Key>
             <PropertyRef Name="Id" />
@@ -134,11 +146,35 @@
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Apellidos" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Foto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Contacto" Relationship="Self.FK_Contacto_Usuario3" FromRole="Usuario" ToRole="Contacto" />
+          <NavigationProperty Name="Contacto1" Relationship="Self.FK_Contacto_Usuario4" FromRole="Usuario" ToRole="Contacto" />
           <NavigationProperty Name="Mensaje" Relationship="Self.FK_Message_Usuario" FromRole="Usuario" ToRole="Mensaje" />
           <NavigationProperty Name="Mensaje1" Relationship="Self.FK_Message_Usuario1" FromRole="Usuario" ToRole="Mensaje" />
-          <NavigationProperty Name="Usuario1" Relationship="Self.Contacto" FromRole="Usuario" ToRole="Usuario1" />
-          <NavigationProperty Name="Usuario2" Relationship="Self.Contacto" FromRole="Usuario1" ToRole="Usuario" />
         </EntityType>
+        <Association Name="FK_Contacto_Usuario3">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Contacto" Type="Self.Contacto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contacto">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contacto_Usuario4">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Contacto" Type="Self.Contacto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contacto">
+              <PropertyRef Name="idAmigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Message_Usuario">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
@@ -163,13 +199,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Contacto">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
-          <End Role="Usuario1" Type="Self.Usuario" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="RedContactos15Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Contacto" EntityType="Self.Contacto" />
           <EntitySet Name="Mensaje" EntityType="Self.Mensaje" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK_Contacto_Usuario3" Association="Self.FK_Contacto_Usuario3">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Contacto" EntitySet="Contacto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contacto_Usuario4" Association="Self.FK_Contacto_Usuario4">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Contacto" EntitySet="Contacto" />
+          </AssociationSet>
           <AssociationSet Name="FK_Message_Usuario" Association="Self.FK_Message_Usuario">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Mensaje" EntitySet="Mensaje" />
@@ -178,10 +219,6 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Mensaje" EntitySet="Mensaje" />
           </AssociationSet>
-          <AssociationSet Name="Contacto" Association="Self.Contacto">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Usuario1" EntitySet="Usuario" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -189,6 +226,15 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RedContactos15ModelStoreContainer" CdmEntityContainer="RedContactos15Entities">
+          <EntitySetMapping Name="Contacto">
+            <EntityTypeMapping TypeName="RedContactos15Model.Contacto">
+              <MappingFragment StoreEntitySet="Contacto">
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idAmigo" ColumnName="idAmigo" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Mensaje">
             <EntityTypeMapping TypeName="RedContactos15Model.Mensaje">
               <MappingFragment StoreEntitySet="Mensaje">
@@ -214,14 +260,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="Contacto" TypeName="RedContactos15Model.Contacto" StoreEntitySet="Contacto">
-            <EndProperty Name="Usuario">
-              <ScalarProperty Name="Id" ColumnName="idUsuario" />
-            </EndProperty>
-            <EndProperty Name="Usuario1">
-              <ScalarProperty Name="Id" ColumnName="idAmigo" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -25,6 +25,7 @@ namespace Repository.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Contacto> Contacto { get; set; }
         public virtual DbSet<Mensaje> Mensaje { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
     }

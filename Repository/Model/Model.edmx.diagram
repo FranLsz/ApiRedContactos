@@ -4,12 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="980c750a8b2845358e8e5410077cc6b7" Name="Diagram1">
-        <EntityTypeShape EntityType="RedContactos15Model.Mensaje" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="RedContactos15Model.Usuario" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+      <Diagram DiagramId="c3e2c178f3034e0bbf0b87a988a0570b" Name="Diagram1">
+        <EntityTypeShape EntityType="RedContactos15Model.Contacto" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="RedContactos15Model.Mensaje" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="RedContactos15Model.Usuario" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <AssociationConnector Association="RedContactos15Model.FK_Contacto_Usuario3" ManuallyRouted="false" />
+        <AssociationConnector Association="RedContactos15Model.FK_Contacto_Usuario4" ManuallyRouted="false" />
         <AssociationConnector Association="RedContactos15Model.FK_Message_Usuario" ManuallyRouted="false" />
         <AssociationConnector Association="RedContactos15Model.FK_Message_Usuario1" ManuallyRouted="false" />
-        <AssociationConnector Association="RedContactos15Model.Contacto" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

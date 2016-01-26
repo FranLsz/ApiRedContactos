@@ -10,8 +10,9 @@ namespace Repository.Adapter
         {
             return new Contacto()
             {
-                IdUsuario = model.IdUsuario,
-                IdAmigo = model.IdAmigo
+                idUsuario = model.IdUsuario,
+                idAmigo = model.IdAmigo,
+                Fecha = model.Fecha
             };
         }
 
@@ -19,8 +20,9 @@ namespace Repository.Adapter
         {
             return new ContactoModel()
             {
-                IdUsuario = model.IdUsuario,
-                IdAmigo = model.IdAmigo
+                IdUsuario = model.idUsuario,
+                IdAmigo = model.idAmigo,
+                Fecha = model.Fecha
             };
         }
     }
